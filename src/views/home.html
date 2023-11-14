@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="apple-touch-icon" sizes="180x180" href="/img/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/img/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/img/favicon-16x16.png">
+    <link rel="manifest" href="/img/site.webmanifest">
+    <title>Team maker v2</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/index.css">
+</head>
+<body>
+    <header>
+        <input type="radio" name="type" id="is-rift" checked>
+        <input type="radio" name="type" id="is-aram">
+        <section>
+            <label for="is-rift" class="type-selector"><img src="/img/rift.png" alt=""></label>
+            <label for="is-aram" class="type-selector"><img src="/img/aram.png" alt=""></label>
+        </section>
+        <input type="checkbox" id="add-players" class="adder">
+        
+        <div id="to-select" class="add-players">
+            <label for="add-players" id="add-minus">-</label>
+            <h3>Agregar a...</h3>
+        </div>
+        <div id="selected">
+            <h3>Jugadores:</h3>
+            <label for="add-players" id="add-plus">+</label>
+        </div>
+        <div id="roles">
+
+        </div>
+    </header>
+    <main>
+        <div id="team-one"></div>
+        <div id="team-two"></div>
+    </main>
+    <script src="/js/utils.js"></script>
+    <script src="/js/index.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+</body>
+</html>

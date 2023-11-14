@@ -1,0 +1,93 @@
+[
+    {
+        "id": 1,
+        "name": "Dingi",
+        "invocador": "Hide On 912",
+        "lineas": ["adc", "sup", "jg", "top", "mid"],
+        "lv": 1.5
+    },
+    {
+        "id": 2,
+        "name": "Sophie",
+        "invocador": "Hide On UvvU",
+        "lineas": ["sup", "jg", "top", "adc", "mid"],
+        "lv": 2
+    },
+    {
+        "id": 3,
+        "name": "Admin",
+        "invocador": "X7REME13",
+        "lineas": ["mid", "sup", "adc", "top", "jg"],
+        "lv": 1
+    },
+    {
+        "id": 4,
+        "name": "Shaco",
+        "invocador": "ll Pink Ward ll",
+        "lineas": ["jg", "top", "sup", "mid", "adc"],
+        "lv": 2
+    },
+    {
+        "id": 5,
+        "name": "Furra",
+        "invocador": "Furra Lhotlan",
+        "lineas": ["top", "adc", "sup", "mid", "jg"],
+        "lv": 2
+    },
+    {
+        "id": 6,
+        "name": "Tomi",
+        "invocador": "Hide on Jonia",
+        "lineas": ["adc", "mid", "sup", "jg", "top"],
+        "lv": 3
+    },
+    {
+        "id": 7,
+        "name": "Jorsuta",
+        "invocador": "Hide On Walls",
+        "lineas": ["jg", "top", "mid", "sup", "adc"],
+        "lv": 2.5
+    },
+    {
+        "id": 8,
+        "name": "Marroc",
+        "invocador": "Marro2144",
+        "lineas": ["sup", "mid", "jg", "top", "adc"],
+        "lv": 3
+    },
+    {
+        "id": 9,
+        "name": "Nahue",
+        "invocador": "Hide On Kyojuro",
+        "lineas": ["top", "jg", "mid", "adc", "sup"],
+        "lv": 3
+    },
+    {
+        "id": 10,
+        "name": "Nico",
+        "invocador": "Nico40567",
+        "lineas": ["adc", "top", "sup", "mid", "jg"],
+        "lv": 2
+    },
+    {
+        "id": 11,
+        "name": "Marcos",
+        "invocador": "Marcsxant2",
+        "lineas": ["sup", "mid", "top", "adc", "jg"],
+        "lv": 1.5
+    },
+    {
+        "id": 12,
+        "name": "Pala",
+        "invocador": "awa",
+        "lineas": ["mid", "jg", "sup", "top", "adc"],
+        "lv": 1
+    },
+    {
+        "id": 13,
+        "name": "Mati",
+        "invocador": "DeathStroke500",
+        "lineas": ["jg", "top", "sup", "mid", "adc"],
+        "lv": 4
+    }
+]
