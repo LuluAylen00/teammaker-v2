@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 const {resolve} = require('path');
 
-const port = 3418;
+const port = process.env.PORT || 3418;
 app.listen(port, () => {
     console.log("Escuchando en puerto "+port);
 });

@@ -170,6 +170,8 @@ let utils = {
         teamOneDiv.innerHTML = "";
         let teamTwoDiv = document.querySelector("#team-two");
         teamTwoDiv.innerHTML = "";
+
+        let teamBar = document.querySelector(".team-bar");
         // console.log(playersAcc, rolesAcc);
         let result = await utils.sort(playersAcc, rolesAcc)
         console.log(`En ${aramChecker.checked ? "ARAM" : "Grieta"}, los equipos quedarían así:`);
@@ -187,9 +189,22 @@ let utils = {
                 teamTwoDiv.innerHTML += `<span><p>${result.teamTwo[i].name}</p><img src="/img/two/${!aramChecker.checked ? rol : "mid"}.png"></span>`
             }
             if (i == rounds - 1) {
-                teamOneDiv.innerHTML += `<span class="level-indicator">${result.teamOneLv}</span>`;
-                teamTwoDiv.innerHTML += `<span class="level-indicator">${result.teamTwoLv}</span>`;
+                // teamOneDiv.innerHTML += `<span class="level-indicator">${result.teamOneLv}</span>`;
+                // teamTwoDiv.innerHTML += `<span class="level-indicator">${result.teamTwoLv}</span>`;
+                let indicator = document.querySelector("#indicator");
+                
+                teamBar.style.display = "flex";
+                let percentOne = result.teamOneLv * 100 / (result.teamOneLv + result.teamTwoLv);
+                // console.log(Number(percentOne.toFixed(1)), Number((100 - percentOne).toFixed(1)));
+                indicator.style.width = `${percentOne}%`
+                let teamOneIndicator = document.querySelector("#team-one-indicator");
+                teamOneIndicator.innerHTML = `${Number(percentOne.toFixed(1))}%`
+                let teamTwoIndicator = document.querySelector("#team-two-indicator");
+                teamTwoIndicator.innerHTML = `${Number((100 - percentOne).toFixed(1))}%`
             }
+        }
+        if (!result.teamOne) {
+            teamBar.style.display = "none";
         }
     }
 }

@@ -75,6 +75,7 @@ header > div {
 
 input.adder:checked ~ .add-players {
     display: flex;
+    z-index: 1;
 }
 
 input.adder:checked ~ #add-plus {
@@ -115,9 +116,10 @@ div#team-two {
 
 main {
     display: flex;
-    justify-content: space-around;
+    justify-content: center;
     width: 60%;
     align-items: center;
+    flex-direction: column;
 }
 
 span {
@@ -128,6 +130,35 @@ span {
 
 span > p {
     margin: 0;
+}
+
+main > section {
+    display: flex;
+    width: 100%;
+    justify-content: space-around;
+}
+
+.team-bar {
+    display: none;
+    width: 80%;
+    position: relative;
+    background-color: #f04747!important;
+}
+
+.team-bar > i {
+    position: absolute;
+    top: 0;
+}
+#team-one-indicator {
+    left: 0;
+}
+#team-two-indicator {
+    right: 0;
+}
+
+#indicator {
+    color: rgba(255, 255, 255, 0)!important;
+    background-color: #263ee5!important;
 }
 
 .level-indicator {
