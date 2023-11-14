@@ -91,6 +91,13 @@ div#selected {
     position: relative;
 }
 
+div#selected > ul, div#to-select > ul {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0;
+}
+
 div#selected > button {
     margin-top: auto;
     margin-bottom: 10px;

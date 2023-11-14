@@ -64,8 +64,8 @@ window.addEventListener('load', async function() {
     let players = await playersFetch.json();
 
     let header = document.querySelector("header");
-    let toSelectList = document.querySelector("div#to-select");
-    let selectedList = document.querySelector("div#selected");
+    let toSelectList = document.querySelector("div#to-select > ul");
+    let selectedList = document.querySelector("div#selected > ul");
 
     players.forEach(function(player) {
         // <input type="checkbox" name="players" id="playerOne">
@@ -99,11 +99,17 @@ window.addEventListener('load', async function() {
         })
 
     })
-    let button = document.createElement("button");
-    button.classList.add("btn","btn-primary");
-    button.innerHTML = "Armar equipos";
-    button.addEventListener("click", () =>{
-        utils.createTeams(players);
+    let zzzButton = document.querySelector("#make-zzz-teams");
+    zzzButton.addEventListener("click", () =>{
+        utils.createTeams(players, "zzz");
     })
-    selectedList.appendChild(button);
+    let button = document.querySelector("#make-teams");
+    button.addEventListener("click", () =>{
+        utils.createTeams(players, "normal");
+    })
+    let hardcoreButton = document.querySelector("#make-hardcore-teams");
+    hardcoreButton.addEventListener("click", () =>{
+        utils.createTeams(players, "hardcore");
+    })
+
 })

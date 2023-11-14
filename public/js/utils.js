@@ -1,7 +1,11 @@
 function levelCounter(team){
-    let acc = 0
+    let acc = {
+        base: 0,
+        modified: 0
+    }
     team.forEach((p) => {
-        acc = acc + p.lv
+        acc.base = acc.base + p.baseLv;
+        acc.modified = acc.modified + p.lv;
     })
     return acc 
 }
@@ -27,7 +31,7 @@ let utils = {
         }
         return array;
     },
-    sort: async (players, roles) => {
+    sort: async (players, roles, mode) => {
         //console.log(players); [1, 2, 9]
         if (players && players.length > 0) {
             let array = players.map(player => {
@@ -43,15 +47,20 @@ let utils = {
                 let thisTry = {
                     teamOne: {
                         roster: utils.assignMod(shuffle.slice(0, shuffle.length / 2),roles),
-                        lv: 0
+                        lv: 0,
+                        baseLv: 0
                     },
                     teamTwo: {
                         roster: utils.assignMod(shuffle.slice(shuffle.length / 2),roles),
-                        lv: 0
+                        lv: 0,
+                        baseLv: 0
                     }
                 }
-                thisTry.teamOne.lv = levelCounter(thisTry.teamOne.roster)
-                thisTry.teamTwo.lv = levelCounter(thisTry.teamTwo.roster)
+                thisTry.teamOne.lv = levelCounter(thisTry.teamOne.roster).modified;
+                thisTry.teamOne.baseLv = levelCounter(thisTry.teamOne.roster).base;
+
+                thisTry.teamTwo.lv = levelCounter(thisTry.teamTwo.roster).modified;
+                thisTry.teamTwo.baseLv = levelCounter(thisTry.teamTwo.roster).base;
                 
                 // if (i < 2) {/*
                 //     console.log(thisTry.teamOne);
@@ -64,15 +73,31 @@ let utils = {
                 // }
 
                 let minLv = (thisTry.teamOne.lv + thisTry.teamTwo.lv) / 2 * 0.95
+                // console.log(thisTry);
+                let modeCondition = false;
+                switch (mode) {
+                    case "zzz":
+                        modeCondition = (thisTry.teamOne.lv <= thisTry.teamOne.baseLv*0.8 && thisTry.teamTwo.lv <= thisTry.teamTwo.baseLv*0.8)
+                        break;
+                    case "normal":
+                        modeCondition = true;
+                        break;
+                    case "hardcore":
+                        modeCondition = (thisTry.teamOne.lv >= thisTry.teamOne.baseLv*1.15 && thisTry.teamTwo.lv >= thisTry.teamTwo.baseLv*1.15)
+                        break;
+                    default:
+                        break;
+                }
+                // let hardcoreCondition = hardcore 
 
-                if (thisTry.teamOne.lv >= minLv && thisTry.teamTwo.lv >= minLv) {
+                if (thisTry.teamOne.lv >= minLv && thisTry.teamTwo.lv >= minLv && modeCondition) {
 
                     if ((thisTry.teamOne.roster.length >= thisTry.teamTwo.roster.length && thisTry.teamOne.lv <= thisTry.teamTwo.lv ) || (thisTry.teamTwo.roster.length >= thisTry.teamOne.roster.length && thisTry.teamTwo.lv <= thisTry.teamOne.lv )) {
                             console.log("Coincidencia en el " + ( i + 1 ) + " intento");
-                            console.log("thisTry.teamOne.lv",thisTry.teamOne.lv);
-                            console.log(thisTry.teamOne.roster.map(p => p.name));
-                            console.log("thisTry.teamTwo.lv",thisTry.teamTwo.lv);
-                            console.log(thisTry.teamTwo.roster.map(p => p.name));
+                            // console.log("thisTry.teamOne.lv",thisTry.teamOne.lv);
+                            // console.log(thisTry.teamOne.roster.map(p => p.name));
+                            // console.log("thisTry.teamTwo.lv",thisTry.teamTwo.lv);
+                            // console.log(thisTry.teamTwo.roster.map(p => p.name));
                             return finalObj = {
                             teamOne: thisTry.teamOne.roster,
                             teamOneLv: thisTry.teamOne.lv,
@@ -84,7 +109,7 @@ let utils = {
 
                 if (i == 99998) {
                     console.log("Error");
-                    
+                    alert("Por algún motivo, no se ha encontrado ningún enfrentamiento potable");
                 }
 
             }
@@ -141,13 +166,14 @@ let utils = {
                 name: player.name,
                 role: lanes[index],
                 lv: player.lv * (roles.length == 0 ? 1+((Math.random()*0.2)-0.1) : mod(lanes[index], player.lineas)),
+                baseLv: player.lv,
                 summonner: player.invocador
             }
             acc.push(newObj)
         })
         return acc
     },
-    createTeams: async (defPlayers) => {
+    createTeams: async (defPlayers, mode) => {
         list = defPlayers;
 
         let players = document.querySelectorAll('input[name="players"]:checked');
@@ -173,21 +199,23 @@ let utils = {
 
         let teamBar = document.querySelector(".team-bar");
         // console.log(playersAcc, rolesAcc);
-        let result = await utils.sort(playersAcc, rolesAcc)
-        console.log(`En ${aramChecker.checked ? "ARAM" : "Grieta"}, los equipos quedarían así:`);
+        let result = await utils.sort(playersAcc, rolesAcc, mode);
+        // console.log(`En ${aramChecker.checked ? "ARAM" : "Grieta"}, los equipos quedarían así:`);
         let rounds = (rolesAcc.length > 0 ? rolesAcc.length : 5 );
         for (let i = 0; i < rounds; i++) {
             const rol = rolesAcc[i];
             // if (!aramChecker.checked) {
             console.log(result.teamOneLv, result.teamTwoLv);
+            // console.log(result);
             // console.log(`${!aramChecker.checked ? "En "+rol+": " :""}${result.teamOne[i] ? result.teamOne[i].name: "      "} ${!aramChecker.checked ? "vs" : " "} ${result.teamTwo[i] ? result.teamTwo[i].name: ""}`);
-            
-            if (result.teamOne && result.teamOne[i]) {
-                teamOneDiv.innerHTML += `<span><img src="/img/one/${!aramChecker.checked ? rol : "mid"}.png"><p>${result.teamOne[i].name}</p></span>`
-            }
-            if (result.teamTwo && result.teamTwo[i]) {
-                teamTwoDiv.innerHTML += `<span><p>${result.teamTwo[i].name}</p><img src="/img/two/${!aramChecker.checked ? rol : "mid"}.png"></span>`
-            }
+            // let int = setInterval(() => {
+                if (result.teamOne && result.teamOne[i]) {
+                    teamOneDiv.innerHTML += `<span><img src="/img/one/${!aramChecker.checked ? rol : "mid"}.png"><p>${result.teamOne[i].name}</p></span>`
+                }
+                if (result.teamTwo && result.teamTwo[i]) {
+                    teamTwoDiv.innerHTML += `<span><p>${result.teamTwo[i].name}</p><img src="/img/two/${!aramChecker.checked ? rol : "mid"}.png"></span>`
+                }
+            // },1500)
             if (i == rounds - 1) {
                 // teamOneDiv.innerHTML += `<span class="level-indicator">${result.teamOneLv}</span>`;
                 // teamTwoDiv.innerHTML += `<span class="level-indicator">${result.teamTwoLv}</span>`;
@@ -201,6 +229,7 @@ let utils = {
                 teamOneIndicator.innerHTML = `${Number(percentOne.toFixed(1))}%`
                 let teamTwoIndicator = document.querySelector("#team-two-indicator");
                 teamTwoIndicator.innerHTML = `${Number((100 - percentOne).toFixed(1))}%`
+                // clearInterval(int);
             }
         }
         if (!result.teamOne) {
