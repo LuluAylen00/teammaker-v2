@@ -80,7 +80,7 @@
         "id": 12,
         "name": "Pala",
         "invocador": "awa",
-        "lineas": ["sup", "jg", "mid", "top", "adc"],
+        "lineas": ["sup", "jg", "midg", "top", "adc"],
         "lv": 1
     },
     {
