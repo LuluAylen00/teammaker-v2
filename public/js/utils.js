@@ -133,8 +133,8 @@ let utils = {
             //  1.4 | 1.2 |  1  | 0.8 | 0.6
             let value = 1
             playerRoles.forEach((role, index) => {
-                if(role == assignedRole){
-                    value =  refObj[index]
+                if(role.rol == assignedRole){
+                    value = role.multiplicador;
                 }
             })
             //console.log("previa",assignedRole,playerRoles);

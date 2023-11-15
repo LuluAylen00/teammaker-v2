@@ -1,93 +1,421 @@
 [
+	{
+		"id": 1,
+		"name": "Dingi",
+		"invocador": "Hide On 912",
+		"lineas": [
+            {
+                "rol": "adc",
+                "multiplicador": 1.4
+            },
+            {
+                "rol": "sup",
+                "multiplicador": 1.2
+            },
+            {
+                "rol": "jg",
+                "multiplicador": 1
+            },
+            {
+                "rol": "top",
+                "multiplicador": 0.8
+            },
+            {
+                "rol": "mid",
+                "multiplicador": 0.6
+            }
+        ],
+		"lv": 1.5
+	},
+	{
+		"id": 2,
+		"name": "Sophie",
+		"invocador": "Hide On UvvU",
+		"lineas": [
+            {
+                "rol": "sup",
+                "multiplicador": 1.4
+            },
+            {
+                "rol": "jg",
+                "multiplicador": 1.2
+            },
+            {
+                "rol": "top",
+                "multiplicador": 1
+            },
+            {
+                "rol": "adc",
+                "multiplicador": 0.9
+            },
+            {
+                "rol": "mid",
+                "multiplicador": 0.7
+            }
+        ],
+		"lv": 2
+	},
+	{
+		"id": 3,
+		"name": "Admin",
+		"invocador": "X7REME13",
+		"lineas": [
+            {
+                "rol": "mid",
+                "multiplicador": 1.4
+            },
+            {
+                "rol": "sup",
+                "multiplicador": 1.2
+            },
+            {
+                "rol": "adc",
+                "multiplicador": 1
+            },
+            {
+                "rol": "top",
+                "multiplicador": 0.8
+            },
+            {
+                "rol": "jg",
+                "multiplicador": 0.6
+            }
+        ],
+		"lv": 1
+	},
+	{
+		"id": 4,
+		"name": "Shaco",
+		"invocador": "ll Pink Ward ll",
+		"lineas": [
+            {
+                "rol": "jg",
+                "multiplicador": 1.4
+            },
+            {
+                "rol": "top",
+                "multiplicador": 1.2
+            },
+            {
+                "rol": "sup",
+                "multiplicador": 1
+            },
+            {
+                "rol": "mid",
+                "multiplicador": 0.8
+            },
+            {
+                "rol": "adc",
+                "multiplicador": 0.6
+            }
+        ],
+		"lv": 2
+	},
+	{
+		"id": 5,
+		"name": "Furra",
+		"invocador": "Furra Lhotlan",
+		"lineas": [
+            {
+                "rol": "top",
+                "multiplicador": 1.4
+            },
+            {
+                "rol": "adc",
+                "multiplicador": 1.2
+            },
+            {
+                "rol": "sup",
+                "multiplicador": 1
+            },
+            {
+                "rol": "mid",
+                "multiplicador": 0.8
+            },
+            {
+                "rol": "jg",
+                "multiplicador": 0.6
+            }
+        ],
+		"lv": 2
+	},
+	{
+		"id": 6,
+		"name": "Tomi",
+		"invocador": "Hide on Jonia",
+		"lineas": [
+            {
+                "rol": "adc",
+                "multiplicador": 1.3
+            },
+            {
+                "rol": "mid",
+                "multiplicador": 1.2
+            },
+            {
+                "rol": "sup",
+                "multiplicador": 1
+            },
+            {
+                "rol": "jg",
+                "multiplicador": 0.9
+            },
+            {
+                "rol": "top",
+                "multiplicador": 0.8
+            }
+        ],
+		"lv": 3
+	},
+	{
+		"id": 7,
+		"name": "Jorsuta",
+		"invocador": "Hide On Walls",
+		"lineas": [
+            {
+                "rol": "jg",
+                "multiplicador": 1.5
+            },
+            {
+                "rol": "top",
+                "multiplicador": 1.3
+            },
+            {
+                "rol": "mid",
+                "multiplicador": 1.1
+            },
+            {
+                "rol": "sup",
+                "multiplicador": 0.8
+            },
+            {
+                "rol": "adc",
+                "multiplicador": 0.6
+            }
+        ],
+		"lv": 2.5
+	},
+	{
+		"id": 8,
+		"name": "Marroc",
+		"invocador": "Marro2144",
+		"lineas": [
+            {
+                "rol": "sup",
+                "multiplicador": 1.4
+            },
+            {
+                "rol": "mid",
+                "multiplicador": 1.3
+            },
+            {
+                "rol": "jg",
+                "multiplicador": 1
+            },
+            {
+                "rol": "top",
+                "multiplicador": 0.9
+            },
+            {
+                "rol": "adc",
+                "multiplicador": 0.6
+            }
+        ],
+		"lv": 3
+	},
+	{
+		"id": 9,
+		"name": "Nahue",
+		"invocador": "Hide On Kyojuro",
+		"lineas": [
+            {
+                "rol": "top",
+                "multiplicador": 1.4
+            },
+            {
+                "rol": "jg",
+                "multiplicador": 1.3
+            },
+            {
+                "rol": "mid",
+                "multiplicador": 1
+            },
+            {
+                "rol": "adc",
+                "multiplicador": 0.8
+            },
+            {
+                "rol": "sup",
+                "multiplicador": 0.7
+            }
+        ],
+		"lv": 3
+	},
+	{
+		"id": 10,
+		"name": "Nico",
+		"invocador": "Nico40567",
+		"lineas": [
+            {
+                "rol": "adc",
+                "multiplicador": 1.4
+            },
+            {
+                "rol": "top",
+                "multiplicador": 1.2
+            },
+            {
+                "rol": "sup",
+                "multiplicador": 1
+            },
+            {
+                "rol": "mid",
+                "multiplicador": 0.8
+            },
+            {
+                "rol": "jg",
+                "multiplicador": 0.6
+            }
+        ],
+		"lv": 2
+	},
+	{
+		"id": 11,
+		"name": "Marcos",
+		"invocador": "Marcsxant2",
+		"lineas": [
+            {
+                "rol": "sup",
+                "multiplicador": 1.4
+            },
+            {
+                "rol": "mid",
+                "multiplicador": 1.3
+            },
+            {
+                "rol": "top",
+                "multiplicador": 1.1
+            },
+            {
+                "rol": "adc",
+                "multiplicador": 0.7
+            },
+            {
+                "rol": "jg",
+                "multiplicador": 0.3
+            }
+        ],
+		"lv": 1.5
+	},
+	{
+		"id": 12,
+		"name": "Pala",
+		"invocador": "awa",
+		"lineas": [
+            {
+                "rol": "sup",
+                "multiplicador": 1.4
+            },
+            {
+                "rol": "jg",
+                "multiplicador": 1.3
+            },
+            {
+                "rol": "mid",
+                "multiplicador": 1.1
+            },
+            {
+                "rol": "top",
+                "multiplicador": 0.7
+            },
+            {
+                "rol": "adc",
+                "multiplicador": 0.5
+            }
+        ],
+		"lv": 1
+	},
+	{
+		"id": 13,
+		"name": "Mati",
+		"invocador": "DeathStroke500",
+		"lineas": [
+            {
+                "rol": "jg",
+                "multiplicador": 1.5
+            },
+            {
+                "rol": "top",
+                "multiplicador": 1.2
+            },
+            {
+                "rol": "sup",
+                "multiplicador": 1
+            },
+            {
+                "rol": "mid",
+                "multiplicador": 0.8
+            },
+            {
+                "rol": "adc",
+                "multiplicador": 0.6
+            }
+        ],
+		"lv": 4
+	},
     {
-        "id": 1,
-        "name": "Dingi",
-        "invocador": "Hide On 912",
-        "lineas": ["adc", "sup", "jg", "top", "mid"],
-        "lv": 1.5
-    },
-    {
-        "id": 2,
-        "name": "Sophie",
-        "invocador": "Hide On UvvU",
-        "lineas": ["sup", "jg", "top", "adc", "mid"],
-        "lv": 2
-    },
-    {
-        "id": 3,
-        "name": "Admin",
-        "invocador": "X7REME13",
-        "lineas": ["mid", "sup", "adc", "top", "jg"],
-        "lv": 1
-    },
-    {
-        "id": 4,
-        "name": "Shaco",
-        "invocador": "ll Pink Ward ll",
-        "lineas": ["jg", "top", "sup", "mid", "adc"],
-        "lv": 2
-    },
-    {
-        "id": 5,
-        "name": "Furra",
-        "invocador": "Furra Lhotlan",
-        "lineas": ["top", "adc", "sup", "mid", "jg"],
-        "lv": 2
-    },
-    {
-        "id": 6,
-        "name": "Tomi",
-        "invocador": "Hide on Jonia",
-        "lineas": ["adc", "mid", "sup", "jg", "top"],
-        "lv": 3
-    },
-    {
-        "id": 7,
-        "name": "Jorsuta",
-        "invocador": "Hide On Walls",
-        "lineas": ["jg", "top", "mid", "sup", "adc"],
-        "lv": 2.5
-    },
-    {
-        "id": 8,
-        "name": "Marroc",
-        "invocador": "Marro2144",
-        "lineas": ["sup", "mid", "jg", "top", "adc"],
-        "lv": 3
-    },
-    {
-        "id": 9,
-        "name": "Nahue",
-        "invocador": "Hide On Kyojuro",
-        "lineas": ["top", "jg", "mid", "adc", "sup"],
-        "lv": 3
-    },
-    {
-        "id": 10,
-        "name": "Nico",
-        "invocador": "Nico40567",
-        "lineas": ["adc", "top", "sup", "mid", "jg"],
-        "lv": 2
-    },
-    {
-        "id": 11,
-        "name": "Marcos",
-        "invocador": "Marcsxant2",
-        "lineas": ["sup", "mid", "top", "adc", "jg"],
-        "lv": 1.5
-    },
-    {
-        "id": 12,
-        "name": "Pala",
-        "invocador": "awa",
-        "lineas": ["sup", "jg", "midg", "top", "adc"],
-        "lv": 1
-    },
-    {
-        "id": 13,
-        "name": "Mati",
-        "invocador": "DeathStroke500",
-        "lineas": ["jg", "top", "sup", "mid", "adc"],
-        "lv": 4
-    }
+		"id": 14,
+		"name": "Random",
+		"invocador": "Random",
+		"lineas": [
+            {
+                "rol": "jg",
+                "multiplicador": 1
+            },
+            {
+                "rol": "top",
+                "multiplicador": 1
+            },
+            {
+                "rol": "sup",
+                "multiplicador": 1
+            },
+            {
+                "rol": "mid",
+                "multiplicador": 1
+            },
+            {
+                "rol": "adc",
+                "multiplicador": 1
+            }
+        ],
+		"lv": 4
+	},{
+		"id": 15,
+		"name": "Valen",
+		"invocador": "awa",
+		"lineas": [
+            {
+                "rol": "sup",
+                "multiplicador": 1.4
+            },
+            {
+                "rol": "jg",
+                "multiplicador": 1.2
+            },
+            {
+                "rol": "mid",
+                "multiplicador": 1
+            },
+            {
+                "rol": "adc",
+                "multiplicador": 0.8
+            },
+            {
+                "rol": "top",
+                "multiplicador": 0.6
+            }
+        ],
+		"lv": 1.5
+	}
 ]

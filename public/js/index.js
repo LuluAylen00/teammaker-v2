@@ -62,6 +62,8 @@ function selectCheckeds() {
 window.addEventListener('load', async function() {
     let playersFetch = await fetch('/api/players');
     let players = await playersFetch.json();
+    players = players.list;
+    // console.log(players);
 
     let header = document.querySelector("header");
     let toSelectList = document.querySelector("div#to-select > ul");

@@ -1,15 +1,28 @@
 const path = require('path');
 const fs = require('fs');
+const fetch = require('node-fetch');
 
 let file = path.resolve(__dirname, "../data/new-data.json");
 
 const service = {
-    read: () => {
-        let data = fs.readFileSync(file)
-        return JSON.parse(data);
+    read: async () => {
+        let data = fs.readFileSync(file);
+        try {
+            let fetchedData = await fetch('https://team-maker.infinityfreeapp.com/new-data.json')
+            let newData = await fetchedData.json();
+            // console.log(newData);
+            if (newData) {
+                return JSON.parse(newData);
+            } else {
+                throw new Error("Asd");
+            }
+        } catch (error) {
+            return JSON.parse(data);
+        }
     },
-    list: () => {
-        let iniData = service.read()
+    list: async () => {
+        let iniData = await service.read();
+        // console.log("iniData", iniData);
         let data = {
             list: iniData,
             length: iniData.length,
@@ -21,8 +34,8 @@ const service = {
         // console.log(data);
         return data
     },
-    findJson: (id) => {
-        return model.read().find(p => p.id == id);
+    findJson: async (id) => {
+        return await model.read().find(p => p.id == id);
     },
 }
 
