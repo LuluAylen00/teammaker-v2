@@ -162,16 +162,73 @@ let utils = {
         // }
         let acc = []
         team.forEach((player,index) => { // lanes[index] = posición asignada en el equipo
+            // log
             let newObj = {
                 name: player.name,
                 role: lanes[index],
                 lv: player.lv * (roles.length == 0 ? 1+((Math.random()*0.2)-0.1) : mod(lanes[index], player.lineas)),
                 baseLv: player.lv,
+                maxLv: Math.max(...player.lineas.map(role => role.multiplicador)) * player.lv,
                 summonner: player.invocador
             }
             acc.push(newObj)
         })
         return acc
+    },
+    getStars: (value) => {
+        let values = [5,4.5,4,3.5,3,2.5,2,1.5,1,0.5];
+        let fieldset = document.createElement('fieldset');
+        fieldset.classList.add("rating");
+
+        values.forEach(intValue => {
+            console.log(value, intValue);
+            let input = document.createElement('input');
+            input.disabled = true;
+            input.type = "radio";
+            let date = Date.now();
+            input.id = date + "-star-" + intValue;
+            input.setAttribute("name", "rating-"+date);
+            input.setAttribute('value', intValue);
+            if (value == intValue) {
+                console.log("Encontró coincidencia en "+intValue);
+                input.checked = true;
+                input.setAttribute('checked', 'checked');
+            } else {
+                input.checked = false;
+            }
+            fieldset.appendChild(input);
+
+            let label = document.createElement('label');
+            label.classList.add(String(intValue).includes(".5") ? "half" : "full");
+            label.for = date + "-star-" + intValue;
+            fieldset.appendChild(label);
+            // <input disabled type="radio" id="first-star5" name="rating" value="5" ${value == 5 ? "checked" : ""}/>
+            // <label class="full" for="first-star5"></label>
+        })
+    //     let stars = `<fieldset class="rating">
+    //     <input disabled type="radio" id="first-star5" name="rating" value="5" ${value == 5 ? "checked" : ""}/>
+    //     <label class="full" for="first-star5"></label>
+    //     <input disabled type="radio" id="first-star4half" name="rating" value="4 and a half" ${value == 4.5 ? "checked" : ""}/>
+    //     <label class="half" for="first-star4half"></label>
+    //     <input disabled type="radio" id="first-star4" name="rating" value="4" ${value == 4 ? "checked" : ""}/>
+    //     <label class="full" for="first-star4"></label>
+    //     <input disabled type="radio" id="first-star3half" name="rating" checked value="3 and a half" ${value == 3.5 ? "checked" : ""}/>
+    //     <label class="half" for="first-star3half"></label>
+    //     <input disabled type="radio" id="first-star3" name="rating" value="3" ${value == 3 ? "checked" : ""}/>
+    //     <label class="full" for="first-star3"></label>
+    //     <input disabled type="radio" id="first-star2half" name="rating" value="2 and a half" ${value == 2.5 ? "checked" : ""}/>
+    //     <label class="half" for="first-star2half"></label>
+    //     <input disabled type="radio" id="first-star2" name="rating" value="2" ${value == 2 ? "checked" : ""}/>
+    //     <label class="full" for="first-star2"></label>
+    //     <input disabled type="radio" id="first-star1half" name="rating" value="1 and a half" ${value == 1.5 ? "checked" : ""}/>
+    //     <label class="half" for="first-star1half"></label>
+    //     <input disabled type="radio" id="first-star1" name="rating" value="1" ${value == 1 ? "checked" : ""}/>
+    //     <label class="full" for="first-star1"></label>
+    //     <input disabled type="radio" id="first-starhalf" name="rating" value="half" ${value == 0.5 ? "checked" : ""} />
+    //     <label class="half" for="first-starhalf"></label>
+    // </fieldset>`
+
+        return fieldset;
     },
     createTeams: async (defPlayers, mode) => {
         list = defPlayers;
@@ -202,19 +259,86 @@ let utils = {
         let result = await utils.sort(playersAcc, rolesAcc, mode);
         // console.log(`En ${aramChecker.checked ? "ARAM" : "Grieta"}, los equipos quedarían así:`);
         let rounds = (rolesAcc.length > 0 ? rolesAcc.length : 5 );
+        let values = [[0,0,0],[0,0,0]];
         for (let i = 0; i < rounds; i++) {
             const rol = rolesAcc[i];
             // if (!aramChecker.checked) {
-            console.log(result.teamOneLv, result.teamTwoLv);
+            // console.log(result.teamOne, result.teamTwo);
             // console.log(result);
             // console.log(`${!aramChecker.checked ? "En "+rol+": " :""}${result.teamOne[i] ? result.teamOne[i].name: "      "} ${!aramChecker.checked ? "vs" : " "} ${result.teamTwo[i] ? result.teamTwo[i].name: ""}`);
             // let int = setInterval(() => {
-                if (result.teamOne && result.teamOne[i]) {
-                    teamOneDiv.innerHTML += `<span><img src="/img/one/${!aramChecker.checked ? rol : "mid"}.png"><p>${result.teamOne[i].name}</p></span>`
+               
+                
+            if (result.teamOne && result.teamOne[i]) {
+                if(i == 0){
+                    result.teamOne.forEach(player => {
+                        values[0][0] = values[0][0] + player.lv;
+                        values[0][1] = values[0][1] + player.maxLv;
+                    })
+                    values[0][2] = Math.round((( values[0][0] * 100 ) / values[0][1]) / 10 ) / 2;
+                    /*teamOneDiv.innerHTML += `
+                    <fieldset class="rating">
+                        <input disabled type="radio" id="first-star5" name="rating" value="5" ${values[0][2] == 5 ? "checked" : ""}/>
+                        <label class="full" for="first-star5"></label>
+                        <input disabled type="radio" id="first-star4half" name="rating" value="4 and a half" ${values[0][2] == 4.5 ? "checked" : ""}/>
+                        <label class="half" for="first-star4half"></label>
+                        <input disabled type="radio" id="first-star4" name="rating" value="4" ${values[0][2] == 4 ? "checked" : ""}/>
+                        <label class="full" for="first-star4"></label>
+                        <input disabled type="radio" id="first-star3half" name="rating" checked value="3 and a half" ${values[0][2] == 3.5 ? "checked" : ""}/>
+                        <label class="half" for="first-star3half"></label>
+                        <input disabled type="radio" id="first-star3" name="rating" value="3" ${values[0][2] == 3 ? "checked" : ""}/>
+                        <label class="full" for="first-star3"></label>
+                        <input disabled type="radio" id="first-star2half" name="rating" value="2 and a half" ${values[0][2] == 2.5 ? "checked" : ""}/>
+                        <label class="half" for="first-star2half"></label>
+                        <input disabled type="radio" id="first-star2" name="rating" value="2" ${values[0][2] == 2 ? "checked" : ""}/>
+                        <label class="full" for="first-star2"></label>
+                        <input disabled type="radio" id="first-star1half" name="rating" value="1 and a half" ${values[0][2] == 1.5 ? "checked" : ""}/>
+                        <label class="half" for="first-star1half"></label>
+                        <input disabled type="radio" id="first-star1" name="rating" value="1" ${values[0][2] == 1 ? "checked" : ""}/>
+                        <label class="full" for="first-star1"></label>
+                        <input disabled type="radio" id="first-starhalf" name="rating" value="half" ${values[0][2] == 0.5 ? "checked" : ""} />
+                        <label class="half" for="first-starhalf"></label>
+                    </fieldset>
+                    `*/
+                    teamOneDiv.appendChild(utils.getStars(values[0][2]));
                 }
-                if (result.teamTwo && result.teamTwo[i]) {
-                    teamTwoDiv.innerHTML += `<span><p>${result.teamTwo[i].name}</p><img src="/img/two/${!aramChecker.checked ? rol : "mid"}.png"></span>`
+                teamOneDiv.innerHTML += `<span><img src="/img/one/${!aramChecker.checked ? rol : "mid"}.png"><p>${result.teamOne[i].name}</p></span>`
+            }
+            if (result.teamTwo && result.teamTwo[i]) {
+                if(i == 0){
+                    result.teamTwo.forEach(player => {
+                        values[1][0] = values[1][0] + player.lv;
+                        values[1][1] = values[1][1] + player.maxLv;
+                    })
+                    values[1][2] = Math.round((( values[1][0] * 100 ) / values[1][1]) / 10 ) / 2;
+                    // teamTwoDiv.innerHTML += `
+                    // <fieldset class="rating">
+                    //     <input disabled type="radio" id="second-star5" name="rating-two" value="5" ${values[1][2] == 5 ? "checked" : ""}/>
+                    //     <label class="full" for="second-star5"></label>
+                    //     <input disabled type="radio" id="second-star4half" name="rating-two" value="4 and a half" ${values[1][2] == 4.5 ? "checked" : ""}/>
+                    //     <label class="half" for="second-star4half"></label>
+                    //     <input disabled type="radio" id="second-star4" name="rating-two" value="4" ${values[1][2] == 4 ? "checked" : ""}/>
+                    //     <label class="full" for="second-star4"></label>
+                    //     <input disabled type="radio" id="second-star3half" name="rating-two" checked value="3 and a half" ${values[1][2] == 3.5 ? "checked" : ""}/>
+                    //     <label class="half" for="second-star3half"></label>
+                    //     <input disabled type="radio" id="second-star3" name="rating-two" value="3" ${values[1][2] == 3 ? "checked" : ""}/>
+                    //     <label class="full" for="second-star3"></label>
+                    //     <input disabled type="radio" id="second-star2half" name="rating-two" value="2 and a half" ${values[1][2] == 2.5 ? "checked" : ""}/>
+                    //     <label class="half" for="second-star2half"></label>
+                    //     <input disabled type="radio" id="second-star2" name="rating-two" value="2" ${values[1][2] == 2 ? "checked" : ""}/>
+                    //     <label class="full" for="second-star2"></label>
+                    //     <input disabled type="radio" id="second-star1half" name="rating-two" value="1 and a half" ${values[1][2] == 1.5 ? "checked" : ""}/>
+                    //     <label class="half" for="second-star1half"></label>
+                    //     <input disabled type="radio" id="second-star1" name="rating-two" value="1" ${values[1][2] == 1 ? "checked" : ""}/>
+                    //     <label class="full" for="second-star1"></label>
+                    //     <input disabled type="radio" id="second-starhalf" name="rating-two" value="half" ${values[1][2] == 0.5 ? "checked" : ""} />
+                    //     <label class="half" for="second-starhalf"></label>
+                    // </fieldset>
+                    // `
+                    teamTwoDiv.appendChild(utils.getStars(values[1][2]));
                 }
+                teamTwoDiv.innerHTML += `<span><p>${result.teamTwo[i].name}</p><img src="/img/two/${!aramChecker.checked ? rol : "mid"}.png"></span>`
+            }
             // },1500)
             if (i == rounds - 1) {
                 // teamOneDiv.innerHTML += `<span class="level-indicator">${result.teamOneLv}</span>`;
@@ -232,6 +356,7 @@ let utils = {
                 // clearInterval(int);
             }
         }
+        console.log(values);
         if (!result.teamOne) {
             teamBar.style.display = "none";
         }

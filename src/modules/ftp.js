@@ -2,16 +2,17 @@
 const path = require('path');
 const fs = require('fs');
 var ftp = require("ftp");
+require('dotenv').config()
 
 // Crear un cliente FTP
 var client = new ftp();
 
 // Conectarse al servidor FTP
 client.connect({
-    host: "ftpupload.net", // El host del servidor FTP
-    user: "if0_35425454", // El nombre de usuario del servidor FTP
-    password: "oyeewyPciUh3F", // La contraseña del servidor FTP
-    port: "21",
+    host: process.env.FTP_HOST,
+    user: process.env.FTP_USER,
+    password: process.env.FTP_PASSWORD,
+    port: process.env.FTP_PORT
 });
 
 let filename = "new-data.json"
