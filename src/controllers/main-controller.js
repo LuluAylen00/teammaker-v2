@@ -2,6 +2,7 @@ const path = require('path');
 const fs = require('fs');
 const Players = require('../services/players');
 const ftp = require('../modules/ftp');
+require('dotenv').config();
 
 const controller = {
     home: (req, res) => {
@@ -48,6 +49,14 @@ const controller = {
         ftp.deleteFile();
         ftp.uploadFile();
         res.send({status: 200})
+    },
+    apiMasteriesUpdate: async (req, res) => {
+        let algo = await Players.masteriesUpdateProcess(process.env.RIOT_APIKEY);
+        res.send({
+            status: 200,
+            algo: algo,
+            data: Players.read()
+        })
     }
 }
 

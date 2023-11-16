@@ -35,6 +35,7 @@ module.exports = {
         // }
     },
     uploadFile: function () {
+        console.log("Iniciando subida..");
         let filePath = `/htdocs/${filename}`;
         client.put(path.resolve(__dirname, '../data',filename), filePath, function (err) {
             if (err) throw err; 

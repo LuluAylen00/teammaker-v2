@@ -1,3 +1,28 @@
+let version 
+async function getVersion(){
+    fetch("https://ddragon.leagueoflegends.com/api/versions.json")
+    .then(response => response.json())
+    .then(data => {
+        version = data[0]
+        return data[0]
+    });
+};
+getVersion();
+let urls = {
+    champList: () => {      
+        return `http://ddragon.leagueoflegends.com/cdn/${version}/data/en_US/champion.json`
+    },
+    spells: () => {
+        return `http://ddragon.leagueoflegends.com/cdn/${version}/data/en_US/summoner.json`
+    },
+    icons: () => {
+        return `http://ddragon.leagueoflegends.com/cdn/${version}/data/en_US/profileicon.json`
+    },
+    champIcon: (picture) => {
+        return `http://ddragon.leagueoflegends.com/cdn/${version}/img/champion/${picture}`
+    }
+}
+
 function levelCounter(team){
     let acc = {
         base: 0,
@@ -85,6 +110,61 @@ let utils = {
                     case "hardcore":
                         modeCondition = (thisTry.teamOne.lv >= thisTry.teamOne.baseLv*1.15 && thisTry.teamTwo.lv >= thisTry.teamTwo.baseLv*1.15)
                         break;
+                    case "worst": 
+                        if (i >= 98990) {
+                            modeCondition = true;
+                        }
+                        // console.log(finalObj.teamOne && finalObj.teamTwo);
+                        if (!(finalObj.teamOne && finalObj.teamTwo)) {
+                            // console.log("entré");
+                            finalObj = {
+                                teamOne: thisTry.teamOne.roster,
+                                teamOneLv: thisTry.teamOne.lv,
+                                teamTwo: thisTry.teamTwo.roster,
+                                teamTwoLv: thisTry.teamTwo.lv
+                            }
+                        } 
+                        // console.log(finalObj.teamOneLv, thisTry.teamOne.lv);
+                        if (finalObj.teamOneLv > thisTry.teamOne.lv && finalObj.teamTwoLv > thisTry.teamTwo.lv){
+                            // console.log(`En la iteración ${i} el nivel del equipo seleccionado (${finalObj.teamOneLv}) fue mayor que el de esta iteración (${thisTry.teamOne.lv}), reemplazando...`);
+                            finalObj = {
+                                teamOne: thisTry.teamOne.roster,
+                                teamOneLv: thisTry.teamOne.lv,
+                                teamTwo: thisTry.teamTwo.roster,
+                                teamTwoLv: thisTry.teamTwo.lv,
+                            }
+                        }
+                        // if (finalObj.teamTwoLv > thisTry.teamTwo.lv){
+                        //     finalObj = {
+                        //         ...finalObj,
+                        //     }
+                        // }
+                        break;
+                    case "best":
+                        if (i >= 98990) {
+                            modeCondition = true;
+                        }
+                        // console.log(finalObj.teamOne && finalObj.teamTwo);
+                        if (!(finalObj.teamOne && finalObj.teamTwo)) {
+                            // console.log("entré");
+                            finalObj = {
+                                teamOne: thisTry.teamOne.roster,
+                                teamOneLv: thisTry.teamOne.lv,
+                                teamTwo: thisTry.teamTwo.roster,
+                                teamTwoLv: thisTry.teamTwo.lv
+                            }
+                        } 
+                        // console.log(finalObj.teamOneLv, thisTry.teamOne.lv);
+                        if (finalObj.teamOneLv < thisTry.teamOne.lv && finalObj.teamTwoLv < thisTry.teamTwo.lv){
+                            // console.log(`En la iteración ${i} el nivel del equipo seleccionado (${finalObj.teamOneLv}) fue mayor que el de esta iteración (${thisTry.teamOne.lv}), reemplazando...`);
+                            finalObj = {
+                                teamOne: thisTry.teamOne.roster,
+                                teamOneLv: thisTry.teamOne.lv,
+                                teamTwo: thisTry.teamTwo.roster,
+                                teamTwoLv: thisTry.teamTwo.lv,
+                            }
+                        }
+                        break;
                     default:
                         break;
                 }
@@ -98,12 +178,15 @@ let utils = {
                             // console.log(thisTry.teamOne.roster.map(p => p.name));
                             // console.log("thisTry.teamTwo.lv",thisTry.teamTwo.lv);
                             // console.log(thisTry.teamTwo.roster.map(p => p.name));
-                            return finalObj = {
-                            teamOne: thisTry.teamOne.roster,
-                            teamOneLv: thisTry.teamOne.lv,
-                            teamTwo: thisTry.teamTwo.roster,
-                            teamTwoLv: thisTry.teamTwo.lv
-                        }
+                            if (mode != "best" && mode != "worst") {
+                                finalObj = {
+                                    teamOne: thisTry.teamOne.roster,
+                                    teamOneLv: thisTry.teamOne.lv,
+                                    teamTwo: thisTry.teamTwo.roster,
+                                    teamTwoLv: thisTry.teamTwo.lv
+                                }
+                            }
+                            return finalObj;
                     }
                 }
 
@@ -169,6 +252,8 @@ let utils = {
                 lv: player.lv * (roles.length == 0 ? 1+((Math.random()*0.2)-0.1) : mod(lanes[index], player.lineas)),
                 baseLv: player.lv,
                 maxLv: Math.max(...player.lineas.map(role => role.multiplicador)) * player.lv,
+                minLv: Math.min(...player.lineas.map(role => role.multiplicador)) * player.lv,
+                masteries: player.masteries,
                 summonner: player.invocador
             }
             acc.push(newObj)
@@ -181,7 +266,7 @@ let utils = {
         fieldset.classList.add("rating");
 
         values.forEach(intValue => {
-            console.log(value, intValue);
+            // console.log(value, intValue);
             let input = document.createElement('input');
             input.disabled = true;
             input.type = "radio";
@@ -190,7 +275,7 @@ let utils = {
             input.setAttribute("name", "rating-"+date);
             input.setAttribute('value', intValue);
             if (value == intValue) {
-                console.log("Encontró coincidencia en "+intValue);
+                // console.log("Encontró coincidencia en "+intValue);
                 input.checked = true;
                 input.setAttribute('checked', 'checked');
             } else {
@@ -259,90 +344,127 @@ let utils = {
         let result = await utils.sort(playersAcc, rolesAcc, mode);
         // console.log(`En ${aramChecker.checked ? "ARAM" : "Grieta"}, los equipos quedarían así:`);
         let rounds = (rolesAcc.length > 0 ? rolesAcc.length : 5 );
-        let values = [[0,0,0],[0,0,0]];
+        // Indice 0 = lv actual
+        // Indice 1 = lv maximo posible
+        // Indice 2 = Valor en estrellas
+        // Indice 3 = lv minimo posible
+        let values = [[0,0,0,0],[0,0,0,0]];
         for (let i = 0; i < rounds; i++) {
-            const rol = rolesAcc[i];
-            // if (!aramChecker.checked) {
-            // console.log(result.teamOne, result.teamTwo);
-            // console.log(result);
-            // console.log(`${!aramChecker.checked ? "En "+rol+": " :""}${result.teamOne[i] ? result.teamOne[i].name: "      "} ${!aramChecker.checked ? "vs" : " "} ${result.teamTwo[i] ? result.teamTwo[i].name: ""}`);
-            // let int = setInterval(() => {
-               
+            const rol = rolesAcc[i];              
                 
             if (result.teamOne && result.teamOne[i]) {
                 if(i == 0){
+                    // console.log(result);
                     result.teamOne.forEach(player => {
                         values[0][0] = values[0][0] + player.lv;
                         values[0][1] = values[0][1] + player.maxLv;
+                        values[0][3] = values[0][3] + player.minLv;
                     })
-                    values[0][2] = Math.round((( values[0][0] * 100 ) / values[0][1]) / 10 ) / 2;
-                    /*teamOneDiv.innerHTML += `
-                    <fieldset class="rating">
-                        <input disabled type="radio" id="first-star5" name="rating" value="5" ${values[0][2] == 5 ? "checked" : ""}/>
-                        <label class="full" for="first-star5"></label>
-                        <input disabled type="radio" id="first-star4half" name="rating" value="4 and a half" ${values[0][2] == 4.5 ? "checked" : ""}/>
-                        <label class="half" for="first-star4half"></label>
-                        <input disabled type="radio" id="first-star4" name="rating" value="4" ${values[0][2] == 4 ? "checked" : ""}/>
-                        <label class="full" for="first-star4"></label>
-                        <input disabled type="radio" id="first-star3half" name="rating" checked value="3 and a half" ${values[0][2] == 3.5 ? "checked" : ""}/>
-                        <label class="half" for="first-star3half"></label>
-                        <input disabled type="radio" id="first-star3" name="rating" value="3" ${values[0][2] == 3 ? "checked" : ""}/>
-                        <label class="full" for="first-star3"></label>
-                        <input disabled type="radio" id="first-star2half" name="rating" value="2 and a half" ${values[0][2] == 2.5 ? "checked" : ""}/>
-                        <label class="half" for="first-star2half"></label>
-                        <input disabled type="radio" id="first-star2" name="rating" value="2" ${values[0][2] == 2 ? "checked" : ""}/>
-                        <label class="full" for="first-star2"></label>
-                        <input disabled type="radio" id="first-star1half" name="rating" value="1 and a half" ${values[0][2] == 1.5 ? "checked" : ""}/>
-                        <label class="half" for="first-star1half"></label>
-                        <input disabled type="radio" id="first-star1" name="rating" value="1" ${values[0][2] == 1 ? "checked" : ""}/>
-                        <label class="full" for="first-star1"></label>
-                        <input disabled type="radio" id="first-starhalf" name="rating" value="half" ${values[0][2] == 0.5 ? "checked" : ""} />
-                        <label class="half" for="first-starhalf"></label>
-                    </fieldset>
-                    `*/
+                    values[0][2] = Math.round((( (values[0][0] - values[0][3]) * 100 ) / (values[0][1]- values[0][3])) / 10 ) / 2;
                     teamOneDiv.appendChild(utils.getStars(values[0][2]));
                 }
-                teamOneDiv.innerHTML += `<span><img src="/img/one/${!aramChecker.checked ? rol : "mid"}.png"><p>${result.teamOne[i].name}</p></span>`
+                // teamOneDiv.innerHTML += `<span></span>`
+                let span = document.createElement("span");
+                span.classList.add('team-one-span');
+                span.innerHTML = `<img src="/img/one/${!aramChecker.checked ? rol : "mid"}.png"><p>${result.teamOne[i].name}</p>`;
+                span.addEventListener("click", () => {
+                    let dataset = teamTwoDiv.querySelector("#dataset");
+                    if (dataset) {
+                        dataset.remove();
+                    } else {
+                        let newDataset = document.createElement("div");
+                        newDataset.id = 'dataset';
+    
+                        let table = document.createElement("table");
+                        // table.classList.add('table')
+                        // table-striped table-dark
+                        table.setAttribute("class", "table table-hover table-striped table-dark");
+                        table.innerHTML = `<thead>
+                            <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Champ</th>
+                            <th scope="col">Maestría</th>
+                            <th scope="col">Puntos</th>
+                            </tr>
+                        </thead>`;
+                        let tbody = document.createElement("tbody");
+                        result.teamOne[i].masteries.forEach((champ) => {
+                            let tr = document.createElement("tr");
+                            tr.innerHTML = `
+                                <th scope="row">${champ.mPosition.selected}</th>
+                                <td><img src="${urls.champIcon(champ.image)}" alt="${champ.name}" title="${champ.name}"/></td>
+                                <td><img src="/img/masteries/m${champ.mastery}.png" alt="Maestría ${champ.mastery}" title="Maestría ${champ.mastery}" /></td>
+                                <td>${champ.points}</td>
+                            `
+                            tbody.appendChild(tr);
+                        })
+                        table.appendChild(tbody);
+                        newDataset.appendChild(table);
+    
+                        teamTwoDiv.appendChild(newDataset);
+                    }
+
+                })
+                teamOneDiv.appendChild(span);
             }
             if (result.teamTwo && result.teamTwo[i]) {
                 if(i == 0){
                     result.teamTwo.forEach(player => {
                         values[1][0] = values[1][0] + player.lv;
                         values[1][1] = values[1][1] + player.maxLv;
+                        values[1][3] = values[1][3] + player.minLv;
                     })
-                    values[1][2] = Math.round((( values[1][0] * 100 ) / values[1][1]) / 10 ) / 2;
-                    // teamTwoDiv.innerHTML += `
-                    // <fieldset class="rating">
-                    //     <input disabled type="radio" id="second-star5" name="rating-two" value="5" ${values[1][2] == 5 ? "checked" : ""}/>
-                    //     <label class="full" for="second-star5"></label>
-                    //     <input disabled type="radio" id="second-star4half" name="rating-two" value="4 and a half" ${values[1][2] == 4.5 ? "checked" : ""}/>
-                    //     <label class="half" for="second-star4half"></label>
-                    //     <input disabled type="radio" id="second-star4" name="rating-two" value="4" ${values[1][2] == 4 ? "checked" : ""}/>
-                    //     <label class="full" for="second-star4"></label>
-                    //     <input disabled type="radio" id="second-star3half" name="rating-two" checked value="3 and a half" ${values[1][2] == 3.5 ? "checked" : ""}/>
-                    //     <label class="half" for="second-star3half"></label>
-                    //     <input disabled type="radio" id="second-star3" name="rating-two" value="3" ${values[1][2] == 3 ? "checked" : ""}/>
-                    //     <label class="full" for="second-star3"></label>
-                    //     <input disabled type="radio" id="second-star2half" name="rating-two" value="2 and a half" ${values[1][2] == 2.5 ? "checked" : ""}/>
-                    //     <label class="half" for="second-star2half"></label>
-                    //     <input disabled type="radio" id="second-star2" name="rating-two" value="2" ${values[1][2] == 2 ? "checked" : ""}/>
-                    //     <label class="full" for="second-star2"></label>
-                    //     <input disabled type="radio" id="second-star1half" name="rating-two" value="1 and a half" ${values[1][2] == 1.5 ? "checked" : ""}/>
-                    //     <label class="half" for="second-star1half"></label>
-                    //     <input disabled type="radio" id="second-star1" name="rating-two" value="1" ${values[1][2] == 1 ? "checked" : ""}/>
-                    //     <label class="full" for="second-star1"></label>
-                    //     <input disabled type="radio" id="second-starhalf" name="rating-two" value="half" ${values[1][2] == 0.5 ? "checked" : ""} />
-                    //     <label class="half" for="second-starhalf"></label>
-                    // </fieldset>
-                    // `
+                    values[1][2] = Math.round((( (values[1][0] - values[1][3]) * 100 ) / (values[1][1]- values[1][3])) / 10 ) / 2;
+
                     teamTwoDiv.appendChild(utils.getStars(values[1][2]));
                 }
-                teamTwoDiv.innerHTML += `<span><p>${result.teamTwo[i].name}</p><img src="/img/two/${!aramChecker.checked ? rol : "mid"}.png"></span>`
+                //////////
+                // teamTwoDiv.innerHTML += `<span><p>${result.teamTwo[i].name}</p><img src="/img/two/${!aramChecker.checked ? rol : "mid"}.png"></span>`
+                let span = document.createElement("span");
+                span.classList.add('team-two-span');
+                span.innerHTML = `<p>${result.teamTwo[i].name}</p><img src="/img/two/${!aramChecker.checked ? rol : "mid"}.png">`;
+                span.addEventListener("click", () => {
+                    let dataset = teamOneDiv.querySelector("#dataset");
+                    if (dataset) {
+                        dataset.remove();
+                    } else {
+                        let newDataset = document.createElement("div");
+                        newDataset.id = 'dataset';
+    
+                        let table = document.createElement("table");
+                        // table.classList.add('table')
+                        // table-striped table-dark
+                        table.setAttribute("class", "table table-hover table-striped table-dark");
+                        table.innerHTML = `<thead>
+                            <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Champ</th>
+                            <th scope="col">Maestría</th>
+                            <th scope="col">Puntos</th>
+                            </tr>
+                        </thead>`;
+                        let tbody = document.createElement("tbody");
+                        result.teamTwo[i].masteries.forEach((champ) => {
+                            let tr = document.createElement("tr");
+                            tr.innerHTML = `
+                                <th scope="row">${champ.mPosition.selected}</th>
+                                <td><img src="${urls.champIcon(champ.image)}" alt="${champ.name}" title="${champ.name}"/></td>
+                                <td><img src="/img/masteries/m${champ.mastery}.png" alt="Maestría ${champ.mastery}" title="Maestría ${champ.mastery}" /></td>
+                                <td>${champ.points}</td>
+                            `
+                            tbody.appendChild(tr);
+                        })
+                        table.appendChild(tbody);
+                        newDataset.appendChild(table);
+    
+                        teamOneDiv.appendChild(newDataset);
+                    }
+
+                })
+                teamTwoDiv.appendChild(span);
             }
-            // },1500)
+            
             if (i == rounds - 1) {
-                // teamOneDiv.innerHTML += `<span class="level-indicator">${result.teamOneLv}</span>`;
-                // teamTwoDiv.innerHTML += `<span class="level-indicator">${result.teamTwoLv}</span>`;
                 let indicator = document.querySelector("#indicator");
                 
                 teamBar.style.display = "flex";
@@ -356,7 +478,7 @@ let utils = {
                 // clearInterval(int);
             }
         }
-        console.log(values);
+        // console.log(values);
         if (!result.teamOne) {
             teamBar.style.display = "none";
         }

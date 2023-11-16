@@ -114,4 +114,13 @@ window.addEventListener('load', async function() {
         utils.createTeams(players, "hardcore");
     })
 
+    let bestButton = document.querySelector("#best");
+    bestButton.addEventListener("click", ()=>{
+        utils.createTeams(players, "best");
+    })
+    let worstButton = document.querySelector("#worst");
+    worstButton.addEventListener("click", ()=>{
+        utils.createTeams(players, "worst");
+    })
+
 })
